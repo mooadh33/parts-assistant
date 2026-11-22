@@ -1,10 +1,21 @@
 # 🔧 Parts Assistant: RAG chatbot for automotive aftermarket data
 
 An internal-style AI assistant that answers questions about spare parts and technical documents, built as a portfolio project.
-Built with FastAPI, Chroma, Streamlit and an LLM API. Parts of the code were written with AI coding tools.
+Built with FastAPI, Chroma, Streamlit and an LLM API. Parts of the code were written with AI coding tools (Claude Code).
 
 > ⚠️ **Status:** the sample documents in `data/docs` and the parts DB are **synthetic**. Replace them with real public datasheets
 > (see `data/README.md`). Without API keys the app runs in **mock mode**; benchmark numbers are only meaningful with real keys.
+
+## Screenshots
+| Login (light / dark) | Chat with database answer (dark) | Loading state |
+|---|---|---|
+| ![Login light](docs/img/login-light.png) | ![Chat dark](docs/img/chat-dark.png) | ![Loading](docs/img/loading-dark.png) |
+
+| Dashboard (light) | Mobile (dark) |
+|---|---|
+| ![Dashboard](docs/img/dashboard-light.png) | ![Mobile](docs/img/mobile-dark.png) |
+
+**UI notes:** light/dark toggle (persisted in the URL as `?theme=dark`), responsive from phone to desktop, themed tables and charts (no canvas widgets), streamed answers, loading skeleton, `prefers-reduced-motion` respected, WCAG AA contrast in both themes. Styling: `ui/style.css`, `.streamlit/config.toml`.
 
 ## Features
 | Area | What it does | Where |
@@ -40,6 +51,7 @@ docker compose up --build                           # everything at once
 
 ## Design decisions & limitations
 - Default embedder is an offline hashing embedder so the repo runs without downloads; **production should use bge-m3 / OpenAI / Voyage** (`app/ingest.py: embed`).
+- Without API keys the app runs in a clean **demo mode** (extractive answers from the documents, rule-based SQL). Real quality needs a real model.
 - Regex PII filter is a baseline; Microsoft Presidio would be the next step. Injection heuristics catch known patterns, not novel attacks.
 - In-memory rate limiter works per process only; use Redis for multiple workers.
 - Pricing table in `app/config.py` must be checked against current provider pricing.
@@ -47,3 +59,11 @@ docker compose up --build                           # everything at once
 
 ## Roadmap
 Voice assistant (STT + TTS), drawing understanding on real CAD PDFs, model routing by query difficulty with measured savings.
+
+## Web frontend (React + Vite + Motion)
+`web/` is a premium chat UI that uses the existing FastAPI backend unchanged (via a dev proxy). Features: conversation history with search (browser storage), streamed answer reveal, typing indicator + skeleton, copy / regenerate / feedback actions, source + SQL panels, result tables, light/dark, responsive, keyboard shortcuts.
+```bash
+uvicorn app.main:app --reload          # backend :8000
+cd web && npm install && npm run dev   # frontend http://localhost:5173
+```
+The Streamlit UI (`ui/`) still works as an alternative.

@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+pydantic
+pyjwt
+chromadb
+pymupdf
+httpx
+python-multipart
+streamlit
+anthropic
+openai
+pytest
