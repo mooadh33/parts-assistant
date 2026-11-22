@@ -1,7 +1,7 @@
 # 🔧 Parts Assistant: RAG chatbot for automotive aftermarket data
 
 An internal-style AI assistant that answers questions about spare parts and technical documents, built as a portfolio project.
-Built with FastAPI, Chroma, Streamlit and an LLM API. Parts of the code were written with AI coding tools (Claude Code).
+Built with FastAPI, Chroma, Streamlit and an LLM API. Parts of the code were written with AI coding tools :).
 
 > ⚠️ **Status:** the sample documents in `data/docs` and the parts DB are **synthetic**. Replace them with real public datasheets
 > (see `data/README.md`). Without API keys the app runs in **mock mode**; benchmark numbers are only meaningful with real keys.
